@@ -3,7 +3,7 @@ package main
 import (
 	"image"
 	"image/color"
-	"image/png"
+	"image/jpeg"
 	"math"
 	"os"
 )
@@ -32,7 +32,12 @@ func main() {
 		r = r * 10000.0
 
 		//fmt.Println(x, y, r)
-		plotLine(int(x), int(y), int(x+r), int(y+r))
+		circle(int(x), int(y), int(r))
+		circle(-int(x), int(y), int(r))
+		circle(-int(x), -int(y), int(r))
+		circle(int(x), -int(y), int(r))
+
+		//plotLine(int(x), int(y), int(x+r), int(y+r))
 
 		/*
 
@@ -114,10 +119,17 @@ func plotLine(x0, y0, x1, y1 int) {
 }
 
 func saveImage() {
-	file, err := os.Create("output.png")
+	o := jpeg.Options{Quality: 100}
+	file, err := os.Create("output.jpg")
 	if err != nil {
 		panic(err)
 	}
 	defer file.Close()
-	png.Encode(file, img)
+	jpeg.Encode(file, img, &o)
+}
+
+func circle(x, y, r int) {
+	for i := 0; i < 360; i++ {
+		plot(x+int(math.Cos(float64(i))*float64(r)), y+int(math.Sin(float64(i))*float64(r)))
+	}
 }
