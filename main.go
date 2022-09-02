@@ -124,6 +124,7 @@ func seventhousand() {
 		r *= 900.0
 
 		circle(int(x), int(y), int(r))
+
 		if int(x) > xmax {
 			xmax = int(x)
 		}
