@@ -144,17 +144,17 @@ func seventhousand() {
 
 	for tmp := 1; tmp <= 40; tmp++ {
 		tmpf := float64(tmp)
-		filename = fmt.Sprintf("SVG/7000-%02d.svg", tmp)
-		filename1 := fmt.Sprintf("SVG/7000-%02d-desc.tmp", tmp)
+		filename = fmt.Sprintf("SVG/7000-%02d-5.svg", tmp)
+		filename1 := fmt.Sprintf("SVG/7000-%02d-5-desc.tmp", tmp)
 		f, err := os.OpenFile(filename1, os.O_CREATE|os.O_WRONLY, 0644)
 		if err != nil {
 			log.Fatal(err)
 		}
 		defer f.Close()
 
-		q := fmt.Sprintf("x := math.Sin(math.Pi*%f*float64(k)/7000.0) * (1 + math.Pow(math.Cos(math.Pi*20*float64(k)/7000.0), 2) - 1.0/5.0*math.Pow(math.Cos(16.0*math.Pi*float64(k)/7000.0), 2))\n", tmpf)
+		q := fmt.Sprintf("x := math.Sin(math.Pi*6*float64(k)/7000.0) * (1 + math.Pow(math.Cos(math.Pi*20*float64(k)/7000.0), 2) - 1.0/%f*math.Pow(math.Cos(16.0*math.Pi*float64(k)/7000.0), 2))\n", tmpf)
 		f.WriteString(q)
-		q = fmt.Sprintf("y := math.Cos(math.Pi*%f*float64(k)/7000.0) * (1 + math.Pow(math.Cos(math.Pi*20*float64(k)/7000.0), 2) - 1.0/5.0*math.Pow(math.Cos(16.0*math.Pi*float64(k)/7000.0), 2))\n", tmpf)
+		q = fmt.Sprintf("y := math.Cos(math.Pi*6*float64(k)/7000.0) * (1 + math.Pow(math.Cos(math.Pi*20*float64(k)/7000.0), 2) - 1.0/%f*math.Pow(math.Cos(16.0*math.Pi*float64(k)/7000.0), 2))\n", tmpf)
 		f.WriteString(q)
 		q = fmt.Sprintf("r := 1.0/200.0 + 1.0/7.0*math.Pow(math.Cos(28*math.Pi*float64(k)/7000.0), 2) + 1.0/7.0*math.Pow(math.Sin(24.0*math.Pi*float64(k)/7000.0), 6) + 1.0/20.0*math.Pow(math.Cos(84.0*math.Pi*float64(k)/7000.0), 4)\n")
 		f.WriteString(q)
@@ -163,8 +163,8 @@ func seventhousand() {
 
 			//x := math.Sin(math.Pi*6*float64(k)/7000.0) * (1 + math.Pow(math.Cos(math.Pi*20*float64(k)/7000.0), 2) - 1.0/5.0*math.Pow(math.Cos(16.0*math.Pi*float64(k)/7000.0), 2))
 			//y := math.Cos(math.Pi*6*float64(k)/7000.0) * (1 + math.Pow(math.Cos(math.Pi*20*float64(k)/7000.0), 2) - 1.0/5.0*math.Pow(math.Cos(16.0*math.Pi*float64(k)/7000.0), 2))
-			x := math.Sin(math.Pi*tmpf*float64(k)/7000.0) * (1 + math.Pow(math.Cos(math.Pi*20*float64(k)/7000.0), 2) - 1.0/5.0*math.Pow(math.Cos(16.0*math.Pi*float64(k)/7000.0), 2))
-			y := math.Cos(math.Pi*tmpf*float64(k)/7000.0) * (1 + math.Pow(math.Cos(math.Pi*20*float64(k)/7000.0), 2) - 1.0/5.0*math.Pow(math.Cos(16.0*math.Pi*float64(k)/7000.0), 2))
+			x := math.Sin(math.Pi*6*float64(k)/7000.0) * (1 + math.Pow(math.Cos(math.Pi*20*float64(k)/7000.0), 2) - 1.0/tmpf*math.Pow(math.Cos(16.0*math.Pi*float64(k)/7000.0), 2))
+			y := math.Cos(math.Pi*6*float64(k)/7000.0) * (1 + math.Pow(math.Cos(math.Pi*20*float64(k)/7000.0), 2) - 1.0/tmpf*math.Pow(math.Cos(16.0*math.Pi*float64(k)/7000.0), 2))
 			r := 1.0/200.0 + 1.0/7.0*math.Pow(math.Cos(28*math.Pi*float64(k)/7000.0), 2) + 1.0/7.0*math.Pow(math.Sin(24.0*math.Pi*float64(k)/7000.0), 6) + 1.0/20.0*math.Pow(math.Cos(84.0*math.Pi*float64(k)/7000.0), 4)
 
 			p := point{X: x, Y: y, R: r}
