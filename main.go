@@ -2,8 +2,11 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"math"
+	"math/rand"
 	"os"
+	"time"
 
 	svg "github.com/ajstarks/svgo"
 	hsl "github.com/misterunix/colorworks/hsl"
@@ -16,6 +19,7 @@ type point struct {
 }
 
 var Points []point
+var filename string
 
 /*
 var img *image.RGBA
@@ -38,7 +42,7 @@ func main() {
 
 	seventhousand()
 
-	saveImage()
+	//saveImage()
 
 }
 
@@ -92,11 +96,17 @@ func plotLine(x0, y0, x1, y1 int) {
 */
 
 func saveImage() {
+
+	f, err := os.OpenFile(filename, os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	width := 2500
 	height := 2500
 	wh := width / 2
 	hh := height / 2
-	canvas := svg.New(os.Stdout)
+	canvas := svg.New(f)
 	canvas.Start(width, height)
 	canvas.Rect(0, 0, width, height, "fill:white")
 	//l := len(Points)
@@ -115,15 +125,7 @@ func saveImage() {
 	}
 
 	canvas.End()
-	/*
-		o := jpeg.Options{Quality: 100}
-		file, err := os.Create("output3.jpg")
-		if err != nil {
-			panic(err)
-		}
-		defer file.Close()
-		jpeg.Encode(file, img, &o)
-	*/
+
 }
 
 /*
@@ -136,23 +138,41 @@ func circle(x, y, r int) {
 
 func seventhousand() {
 
-	/*
-		var xmin, xmax, ymin, ymax int
-		xmin = 100000
-		xmax = 0
-		ymin = 100000
-		ymax = 0
-	*/
-	for k := 1; k <= 7000; k++ {
+	rseed := time.Now().UnixNano()
 
-		x := math.Sin(math.Pi*6*float64(k)/7000.0) * (1 + math.Pow(math.Cos(math.Pi*20*float64(k)/7000.0), 2) - 1.0/5.0*math.Pow(math.Cos(16.0*math.Pi*float64(k)/7000.0), 2))
-		y := math.Cos(math.Pi*6*float64(k)/7000.0) * (1 + math.Pow(math.Cos(math.Pi*20*float64(k)/7000.0), 2) - 1.0/5.0*math.Pow(math.Cos(16.0*math.Pi*float64(k)/7000.0), 2))
-		//x := math.Sin(math.Pi*7*float64(k)/7000.0) * (1 + math.Pow(math.Cos(math.Pi*20*float64(k)/7000.0), 2) - 1.0/5.0*math.Pow(math.Cos(16.0*math.Pi*float64(k)/7000.0), 2))
-		//y := math.Cos(math.Pi*7*float64(k)/7000.0) * (1 + math.Pow(math.Cos(math.Pi*20*float64(k)/7000.0), 2) - 1.0/5.0*math.Pow(math.Cos(16.0*math.Pi*float64(k)/7000.0), 2))
-		r := 1.0/200.0 + 1.0/7.0*math.Pow(math.Cos(28*math.Pi*float64(k)/7000.0), 2) + 1.0/7.0*math.Pow(math.Sin(24.0*math.Pi*float64(k)/7000.0), 6) + 1.0/20.0*math.Pow(math.Cos(84.0*math.Pi*float64(k)/7000.0), 4)
+	rand.Seed(rseed)
 
-		p := point{X: x, Y: y, R: r}
-		Points = append(Points, p)
+	for tmp := 1; tmp <= 40; tmp++ {
+		tmpf := float64(tmp)
+		filename = fmt.Sprintf("SVG/7000-%02d.svg", tmp)
+		filename1 := fmt.Sprintf("SVG/7000-%02d-desc.tmp", tmp)
+		f, err := os.OpenFile(filename1, os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			log.Fatal(err)
+		}
+		defer f.Close()
+
+		q := fmt.Sprintf("x := math.Sin(math.Pi*%f*float64(k)/7000.0) * (1 + math.Pow(math.Cos(math.Pi*20*float64(k)/7000.0), 2) - 1.0/5.0*math.Pow(math.Cos(16.0*math.Pi*float64(k)/7000.0), 2))\n", tmpf)
+		f.WriteString(q)
+		q = fmt.Sprintf("y := math.Cos(math.Pi*%f*float64(k)/7000.0) * (1 + math.Pow(math.Cos(math.Pi*20*float64(k)/7000.0), 2) - 1.0/5.0*math.Pow(math.Cos(16.0*math.Pi*float64(k)/7000.0), 2))\n", tmpf)
+		f.WriteString(q)
+		q = fmt.Sprintf("r := 1.0/200.0 + 1.0/7.0*math.Pow(math.Cos(28*math.Pi*float64(k)/7000.0), 2) + 1.0/7.0*math.Pow(math.Sin(24.0*math.Pi*float64(k)/7000.0), 6) + 1.0/20.0*math.Pow(math.Cos(84.0*math.Pi*float64(k)/7000.0), 4)\n")
+		f.WriteString(q)
+
+		for k := 1; k <= 7000; k++ {
+
+			//x := math.Sin(math.Pi*6*float64(k)/7000.0) * (1 + math.Pow(math.Cos(math.Pi*20*float64(k)/7000.0), 2) - 1.0/5.0*math.Pow(math.Cos(16.0*math.Pi*float64(k)/7000.0), 2))
+			//y := math.Cos(math.Pi*6*float64(k)/7000.0) * (1 + math.Pow(math.Cos(math.Pi*20*float64(k)/7000.0), 2) - 1.0/5.0*math.Pow(math.Cos(16.0*math.Pi*float64(k)/7000.0), 2))
+			x := math.Sin(math.Pi*tmpf*float64(k)/7000.0) * (1 + math.Pow(math.Cos(math.Pi*20*float64(k)/7000.0), 2) - 1.0/5.0*math.Pow(math.Cos(16.0*math.Pi*float64(k)/7000.0), 2))
+			y := math.Cos(math.Pi*tmpf*float64(k)/7000.0) * (1 + math.Pow(math.Cos(math.Pi*20*float64(k)/7000.0), 2) - 1.0/5.0*math.Pow(math.Cos(16.0*math.Pi*float64(k)/7000.0), 2))
+			r := 1.0/200.0 + 1.0/7.0*math.Pow(math.Cos(28*math.Pi*float64(k)/7000.0), 2) + 1.0/7.0*math.Pow(math.Sin(24.0*math.Pi*float64(k)/7000.0), 6) + 1.0/20.0*math.Pow(math.Cos(84.0*math.Pi*float64(k)/7000.0), 4)
+
+			p := point{X: x, Y: y, R: r}
+			Points = append(Points, p)
+		}
+
+		saveImage()
+		Points = Points[:0]
 
 	}
 
