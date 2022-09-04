@@ -17,5 +17,7 @@
 *.txt
 *.png
 *.jpg
+*.xcf 
+*.svg
 
 yeganehcircles
