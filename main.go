@@ -177,3 +177,32 @@ func seventhousand() {
 	}
 
 }
+
+func bird() {
+
+	pi := math.Pi
+
+	for k := 1; k <= 9830; k++ {
+		kk := float64(k)
+		/*x1 := math.Pow(math.Cos((math.Pi*kk)/20000.0),12)
+		  x2 := math.Pow( 1.0/2.0 * ( math.Cos((31*math.Pi*kk)/10000.0)),16)
+		  x3 := math.Sin((math.Pi*6.0*kk)/10000.0)
+		  x4 := 1.0/6.0 * math.Sin((31*math.Pi*kk)/10000.0)
+
+
+		  x:= (math.Pow(math.Sin((math.Pi*float64(k))/20000),12)) * (math.Pow(1/2*(math.Cos((21*math.Pi*float64(k))/10000)),16))
+		*/
+
+		x1 := math.Pow(math.Sin((pi*kk)/20000.0), 12)
+		x2 := math.Pow(math.Cos((31*pi*kk)/10000.0), 16)
+		x3 := math.Sin((pi * 6 * kk) / 10000.0)
+		x4 := 1.0 / 6.0 * math.Pow(math.Sin((31*pi*kk)/10000.0), 20)
+		x5 := x1 * (1.0 / 2.0 * x2 * x3 * x4)
+		x6 := 3 * kk / 20000.0
+		x7 := math.Pow(math.Cos((31 * pi * kk)), 6)
+		x8 := math.Pow(math.Sin((pi/2.0)*((kk-10000.0)/10000.0)), 7) - (pi / 5.0)
+		x := x5 + x6*x7*x8
+
+	}
+
+}
